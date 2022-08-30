@@ -1,41 +1,41 @@
+#1. makeCacheMatrix: This function creates a special "matrix" object that can 
+#cache its inverse.
 
-library(datasets)
-data(iris)
+library(MASS)
+makeCacheMatrix=function(x=matrix()){
+  inv=NULL
+  set=funtion(y){
+    x<<-y
+    inv<<-NULL
+  }
+  get=function()x
+  setinv=function(inverse)inv<<-inverse
+getinv=function(){
+  inver=ginv(x)
+  inver%*%x
+}
+list(set=set,get=get,
+     setinv=setinv,
+     getinv=getinv)
+}
 
-mean(irisv$Sepal.Length)
-irisv=subset(iris,iris$Species=="virginica")
-
-library(datasets)
-data(mtcars)
-        
-
-tapply(mtcars$cyl, mtcars$mpg, mean)
-
-with(mtcars, tapply(mpg, cyl, mean))
-
-tapply(mtcars$mpg, mtcars$cyl, mean)
-
-lapply(mtcars, mean)
-
-sapply(split(mtcars$mpg, mtcars$cyl), mean)
-
-apply(mtcars, 2, mean)
-sapply(mtcars, cyl, mean)
-
-split(mtcars, mtcars$cyl)
-
-mean(mtcars$mpg, mtcars$cyl)
+#2. cacheSolve: This function computes the inverse of the special "matrix" 
+#returned by makeCacheMatrix above. If the inverse has already been calculated 
+#(and the matrix has not changed), then the cachesolve should retrieve the 
+#inverse from the cache.
 
 
-tapply(mtcars$hp, mtcars$cyl, mean)
 
-s8=subset(mtcars,mtcars$cyl==8)
-s4=subset(mtcars,mtcars$cyl==4)
-m4=mean(s4$hp)
-m8=mean(s8$hp)
-m8-m4
-m8
 
-debug(ls)
-ls
-
+cachesole=function(x,...)
+{
+  inv=x$getinv()
+  if(!is.null(inv)){
+    message("getting cachet date!")
+    return(inv)
+  }
+  date=g$get()
+  inv=solve(date,...)
+  x$setinv(inv)
+  inv
+}
